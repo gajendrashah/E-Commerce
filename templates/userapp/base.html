@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+
+<!-- molla/index-3.html  22 Nov 2019 09:55:42 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="All Electronics product you need ">
+   
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'userapp/assets/images/icons/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'userapp/assets/images/icons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'userapp/assets/images/icons/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'userapp/assets/images/icons/site.html' %}">
+    <link rel="mask-icon" href="{% static 'userapp/assets/images/icons/safari-pinned-tab.svg' %}" color="#666666">
+    <link rel="shortcut icon" href="{% static 'userapp/assets/images/icons/favicon.ico' %}">
+    <meta name="apple-mobile-web-app-title" content="Ecommerce">
+    <meta name="application-name" content="Ecommerce">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="{% static 'assets/images/icons/browserconfig.xml' %}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+    <link rel="stylesheet" href="{% static 'userapp/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'userapp/assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'userapp/assets/css/plugins/owl-carousel/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'userapp/assets/css/plugins/magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'userapp/assets/css/plugins/jquery.countdown.css' %}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'userapp/assets/css/plugins/nouislider/nouislider.css' %}">
+
+    <link rel="stylesheet" href="{% static 'userapp/assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'userapp/assets/css/skins/skin-demo-3.css' %}">
+    <link rel="stylesheet" href="{% static 'userapp/assets/css/demos/demo-3.css' %}">
+
+</head>
+
+<body>
+    <div class="page-wrapper">
+      {% include "userapp/components/header/header.html" %}
+
+        {% block content %}
+
+
+        {% endblock %}
+    {% include "userapp/components/footer/footer.html" %}
+       
+    </div><!-- End .page-wrapper -->
+    
+    
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+
+
+    {% include "userapp/components/auth/signup-login.html"%}
+
+
+    <!-- Plugins JS File -->
+    
+    <script src="{% static 'userapp/assets/js/jquery.min.js'%}"></script>
+    <script src="{% static 'userapp/assets/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'userapp/assets/js/jquery.hoverIntent.min.js'%}"></script>
+    <script src="{% static 'userapp/assets/js/jquery.waypoints.min.js'%}"></script>
+    <script src="{% static 'userapp/assets/js/superfish.min.js'%}"></script>
+    <script src="{% static 'userapp/assets/js/owl.carousel.min.js'%}"></script>
+
+    <script src="{% static 'userapp/assets/js/wNumb.js' %}"></script>
+    <script src="{% static 'userapp/assets/js/bootstrap-input-spinner.js'%}"></script>
+    <script src="{% static 'userapp/assets/js/jquery.plugin.min.js'%}"></script>
+    <script src="{% static 'userapp/assets/js/jquery.magnific-popup.min.js'%}"></script>
+    <script src="{% static 'userapp/assets/js/jquery.countdown.min.js'%}"></script>
+    <script src ="{% static 'userapp/lib/jquery-ui/jquery-ui.js'%}"></script>
+    {% include "./shop-ajax.html" %}
+
+    <script src="{% static 'userapp/assets/js/nouislider.min.js' %}"></script>
+
+    
+    <!-- Main JS File -->
+
+    <script src="{% static 'userapp/assets/js/main.js'%}"></script>
+
+    <script src="{% static 'userapp/assets/js/demos/demo-3.js'%}"></script>
+    <script>
+
+        $(document).ready(function(){
+          var base_url = $(location).attr("origin")
+          console.log(base_url)
+          $( "#tags" ).autocomplete({
+            source: "{% url 'search_items' %}"
+          });
+          
+          
+          var total_price = 0;
+          
+          $(".total-col").each(function(){
+            var a =parseFloat($(this).text().replace("$",""))
+            console.log(a)
+             total_price += a
+          
+            
+          });
+          console.log("iitial_price",total_price)
+      
+          $(".input-group-append").click(function(){
+            var a = parseInt ($(this).parent().siblings().val())
+            var product_key = parseInt($(this).parent().siblings(".product_key").val())
+            var url = base_url+"/cart/item_increment/"+product_key+"/";
+            var som =   $(this).parents().siblings(".total-col");
+            
+            var data = JSON.stringify({"product_qty": a});
+           
+  
+            ajax_post_method(url,data,som)
+            
+            var product_price = parseInt( $(this).parents().siblings(".price-col").text())
+            total_price += product_price;
+            summary_subtotal()
+              
+           
+            
+          });
+          $(".input-group-prepend").click(function(){
+            var a = parseInt ($(this).parent().siblings().val())
+            var product_key = parseInt($(this).parent().siblings(".product_key").val())
+            var url = base_url+"/cart/item_decrement/"+product_key+"/";
+            var som =   $(this).parents().siblings(".total-col");
+            var data = JSON.stringify({"product_qty": a});
+  
+            ajax_post_method(url,data,som)
+            var product_price = parseInt( $(this).parents().siblings(".price-col").text())
+            total_price -= product_price;
+            summary_subtotal()
+            
+            
+          });
+
+          function ajax_post_method(url,data,place){
+            $.ajax({
+              url: url,
+              dataType: 'json',
+              type: 'POST',
+              contentType: 'application/json',
+              data:data,
+              success: function( data, textStatus, jQxhr ){
+                  place.html("$"+data["total_price"]);
+                  prc = data["total_price"];
+                  
+                
+              },
+              error: function( jqXhr, textStatus, errorThrown ){
+                  console.log( errorThrown );
+              }
+             
+          });
+
+          };
+          function summary_subtotal(){
+            var chill = $(".summary-subtotal td:nth-child(2)")
+            chill.html("$ "+ total_price)
+            
+          }
+          summary_subtotal()
+
+
+
+
+          //place_order
+          $("#proceed_data").click(function(){
+            var url = base_url+"/cart/checkout/"
+            var first_name = $("#first_name").val();
+            var last_name = $("#last_name").val();
+            var company_name = $("#company_name").val();
+             var country = $("#country").val();
+            var address1 = $("#address1").val();
+            var address2 = $("#address2").val();
+            var city = $("#city").val();
+            var state = $("#state").val();
+            var postcode = $("#postcode").val();
+            var phonenumber = $("#phonenumber").val();
+            var email = $("#email").val();
+            var notes = $("#note").val();
+            console.log(first_name,last_name,company_name,country,address1,address2,city,state,postcode,phonenumber,email,notes)
+            
+          var  data ={"first_name":first_name,
+         "last_name":last_name,
+         "company_name":company_name,
+         "country":country,
+         "address1":address1,
+         "address2":address2,
+         "city":city,
+         "state":state,
+         "postcode":postcode,
+         "phonenumber":phonenumber,
+         "email":email,
+         "notes":notes
+        }
+        console.log(data)
+        $.ajax({
+          url: url,
+          dataType: 'json',
+          type: 'POST',
+          contentType: 'application/json',
+          data:JSON.stringify(data),
+          success: function( data, textStatus, jQxhr ){
+             console.log(data)
+              
+            
+          },
+          error: function( jqXhr, textStatus, errorThrown ){
+              console.log( errorThrown );
+          }
+         
+      });
+
+
+        $("#form2").trigger("reset")
+          }) ;
+
+        });
+        
+       
+        
+    </script>
+    <script>
+      function addToCart(productID) {
+        console.log(productID)
+        fetch('/cart/add/' + productID).then(function (response) {
+            return response.json()
+        }).then(function (data) {
+                alert('Product Added Succesfully');
+                document.querySelector('.cart-count').innerHTML = data.message;
+                
+                
+            })
+           
+            
+      };
+
+
+    </script>
+
+</body>
+
+
+<!-- molla/index-3.html  22 Nov 2019 09:55:58 GMT -->
+</html>
