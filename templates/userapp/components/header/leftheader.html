@@ -1,0 +1,75 @@
+{% load static %}
+
+<div class="header-bottom sticky-header">
+    <div class="container">
+        <div class="header-left">
+            <div class="dropdown category-dropdown">
+                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Browse Categories">
+                    Browse Categories <i class="icon-angle-down"></i>
+                </a>
+
+                <div class="dropdown-menu">
+                    <nav class="side-nav">
+                        <ul class="menu-vertical sf-arrows">
+                           
+                            <li class="item-lead"><a href="#">Daily offers</a></li>
+                            <li class="item-lead"><a href="#">Gift Ideas</a></li>
+                            {% for cate in catagory %}
+                            <li> <a href="#"><span>{{cate.icon }}</i></span> {{cate.catagoryname }}</a></li>
+                            {% endfor %}
+                        </ul><!-- End .menu-vertical -->
+                    </nav><!-- End .side-nav -->
+                </div><!-- End .dropdown-menu -->
+            </div><!-- End .category-dropdown -->
+        </div><!-- End .header-left -->
+
+        <div class="header-center">
+            <nav class="main-nav">
+                <ul class="menu sf-arrows">
+                    <li class="megamenu-container active">
+                        <a href="/" >Home</a>
+
+                        
+                    </li>
+                    <li>
+                        <a href="{% url "shop_page"%}">Shop</a>
+                    </li>
+                    <li>
+                        <a href="product.html" class="sf-with-ul">Product</a>
+
+                        <div class="megamenu megamenu-sm">
+                            <div class="row no-gutters">
+                                <div class="col-md-6">
+                                    <div class="menu-col">
+                                        <div class="menu-title">Product Details</div><!-- End .menu-title -->
+                                        <ul>
+                                            {% for cats in catagory %}
+                                            <li><a href="{% url "category_page" cats.slug %}">{{cats}}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div><!-- End .menu-col -->
+                                </div><!-- End .col-md-6 -->
+
+                                
+                            </div><!-- End .row -->
+                        </div><!-- End .megamenu megamenu-sm -->
+                    </li>
+                    <li>
+                        <a href="{% url 'wats_on_sale' %}" class="">Wat on sale </a>
+
+                        
+                    </li>
+                    <li>
+                        <a href="{% url 'how_to_order' %}" class="">How to order     </a>
+
+                       
+                    </li>
+                    <li>
+                        <a href="{% url 'faqs' %}" class="">FAQs</a>
+
+                       
+                    </li>
+                </ul><!-- End .menu -->
+            </nav><!-- End .main-nav -->
+        <!-- End .container -->
+</div><!-- End .header-bottom -->
